@@ -57,6 +57,49 @@ void Snake(sf::RenderWindow &win) // ??????? ?????? ?? ?????
 	}
 }
 
+int tick() 
+{ 
+for (int i = 1; i < num; i++) 
+if (s[0].x == s[i].x && s[0].y == s[i].y) 
+return 0; 
+if (s[0].x > 38) return 0; 
+if (s[0].y > 38 ) return 0; 
+if (s[0].x < 0) return 0; 
+if (s[0].y < 0) return 0; 
+
+for (int i = num; i > 0; —i) 
+{ 
+s[i].x = s[i - 1].x; 
+s[i].y = s[i - 1].y; 
+} 
+if (dir == 2) s[0].y += 1; 
+if (dir == 3) s[0].x -= 1; 
+if (dir == 1) s[0].x += 1; 
+if (dir == 0) s[0].y -= 1; 
+
+for (int i = 0; i < 10; i++) 
+{ 
+if ((s[0].x == m[i].x) && (s[0].y == m[i].y)) 
+{ 
+num++; 
+m[i].New(); 
+} 
+} 
+
+
+
+
+} 
+
+void Key(int &dir) 
+{ 
+if ((Keyboard::isKeyPressed(Keyboard::Up)||Keyboard::isKeyPressed(Keyboard::W))&&dir!=2) dir = 0; 
+if ((Keyboard::isKeyPressed(Keyboard::Right)||Keyboard::isKeyPressed(Keyboard::D))&&dir!=3) dir = 1; 
+if ((Keyboard::isKeyPressed(Keyboard::Down)||Keyboard::isKeyPressed(Keyboard::S))&&dir!=0) dir = 2; 
+if ((Keyboard::isKeyPressed(Keyboard::Left)||Keyboard::isKeyPressed(Keyboard::A))&&dir!=1) dir = 3; 
+
+}
+
 void Display(sf::RenderWindow &win) //??????? ????? ?????????
 {
 
