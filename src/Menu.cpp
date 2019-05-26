@@ -1,16 +1,16 @@
 #include "Menu.hpp"
+bool isMenu = 1;
+
 void menu(RenderWindow& window)
 {
-    Texture BackgroudTexture, ButtonStartTexture, ButtonRecordTexture, ButtonDevelopTexture, ButtonExitTexture;
-
+    Texture BackgroudTexture, ButtonStartTexture, ButtonRecordTexture, ButtonDevelopTexture, ButtonExitTexture, BackgrounddevTexture;
+    BackgrounddevTexture.loadFromFile("image/Developers.jpg");
     BackgroudTexture.loadFromFile("image/Fon.jpg");
     ButtonStartTexture.loadFromFile("image/Start.jpg");
     ButtonRecordTexture.loadFromFile("image/Record.jpg");
     ButtonDevelopTexture.loadFromFile("image/Dev.jpg");
     ButtonExitTexture.loadFromFile("image/Exit.jpg");
     Sprite background(BackgroudTexture), start(ButtonStartTexture), record(ButtonRecordTexture), develop(ButtonDevelopTexture), exit(ButtonExitTexture);
-
-    // bool isMenu = TRUE;
     int menuNum = 0;
     background.setPosition(0, 0);
     start.setPosition(50, 300);
@@ -44,10 +44,8 @@ void menu(RenderWindow& window)
             if (menuNum == 1)
                 game(window);
             if (menuNum == 3) {
-                while (1) {
-                    window.clear();
-                    // dev(window);
-                }
+                isMenu = 0;
+                dev(window, BackgrounddevTexture, ButtonExitTexture);
             }
             if (menuNum == 4)
                 window.close();
@@ -58,7 +56,7 @@ void menu(RenderWindow& window)
                 window.close();
         }
 
-        window.clear(sf::Color::Black);
+        window.clear();
         window.draw(background);
         window.draw(start);
         window.draw(record);
@@ -67,3 +65,39 @@ void menu(RenderWindow& window)
         window.display();
     }
 }
+
+void dev(RenderWindow& window, Texture& BackgrounddevTexture, Texture& ButtonExitTexture)
+{
+    Sprite background(BackgrounddevTexture), Exit(ButtonExitTexture);
+    int menuNum = 0;
+    background.setPosition(0, 0);
+    Exit.setPosition(530, 800);
+    while (window.isOpen()) {
+        Exit.setColor(Color::White);
+
+        if (IntRect(530, 800, 954, 86).contains(Mouse::getPosition(window))) {
+            Exit.setColor(Color::Red);
+            menuNum = 1;
+        } else
+            menuNum = 0;
+
+        if (Mouse::isButtonPressed(Mouse::Left)) {
+            if (menuNum == 1)
+
+            {
+                isMenu = 1;
+                menu(window);
+            }
+        }
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed)
+                window.close();
+        }
+        window.clear();
+        window.draw(background);
+        window.draw(Exit);
+        window.display();
+    }
+}
+
