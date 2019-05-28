@@ -100,4 +100,3 @@ void dev(RenderWindow& window, Texture& BackgrounddevTexture, Texture& ButtonExi
         window.display();
     }
 }
-

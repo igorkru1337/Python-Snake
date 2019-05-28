@@ -1,10 +1,10 @@
 #ifndef H_SNAKE
 #define H_SNAKE
+#include "Menu.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <random>
 #include <time.h>
-#include "Menu.hpp"
 
 using namespace sf;
 int N = 39, M = 39;

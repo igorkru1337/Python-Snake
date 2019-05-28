@@ -1,8 +1,8 @@
 #ifndef H_MENU
 #define H_MENU
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
 #include <random>
 #include <time.h>
