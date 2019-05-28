@@ -110,6 +110,7 @@ int game(RenderWindow& window) // ??????? ???????
     srand(time(0));
     dir = 0;
     bool isKey = 1;
+    bool isPaused = 0;
     for (int i = 0; i < 5; i++)
         m[i].New();
     num = 4;
@@ -127,9 +128,23 @@ int game(RenderWindow& window) // ??????? ???????
         clock.restart();
         time = time / speed;
         timer += time;
+        if (isPaused)
+            timer = 0;
         while (window.pollEvent(event)) {
+            if (event.type == sf::Event::LostFocus)
+                isPaused = 1;
+            if (event.type == sf::Event::GainedFocus)
+                isPaused = 0;
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::KeyReleased) {
+                if (event.key.code == sf::Keyboard::Space) {
+                    if (isPaused == 0)
+                        isPaused = 1;
+                    else
+                        isPaused = 0;
+                }
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Escape))
             menu(window);
