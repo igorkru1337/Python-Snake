@@ -6,5 +6,5 @@ script:
   - sudo apt-get install libsfml-dev
   - make
   - make test
-  - ./bin/test
+  - ./bin/Test
   - git ls-files src/ | xargs clang-format -i && git diff --exit-code
