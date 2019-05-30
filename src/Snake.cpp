@@ -162,7 +162,9 @@ int game(RenderWindow& window) // ??????? ???????
             {
                 if ((s[0].x == m[i].x1) && (s[0].y == m[i].y1)) {
                     num++;
-                    m[i].New();
+                    for (int j = 0; j < num; j++)
+                        while ((s[j].x == m[i].x1) && (s[j].y == m[i].y1))
+                            m[i].New();
                 }
             }
         }
