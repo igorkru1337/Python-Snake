@@ -14,8 +14,9 @@ char temp1[80];
 
 void menu(RenderWindow& window)
 {
-    Texture BackgroudTexture, ButtonStartTexture, ButtonRecordTexture, ButtonDevelopTexture, ButtonExitTexture, BackgrounddevTexture;
+    Texture BackgroudTexture, ButtonStartTexture, ButtonRecordTexture, ButtonDevelopTexture, ButtonExitTexture, BackgrounddevTexture, BackgroundrecTexture;
     BackgrounddevTexture.loadFromFile("image/Developers.jpg");
+    BackgroundrecTexture.loadFromFile("image/Records.jpg");
     BackgroudTexture.loadFromFile("image/Fon.jpg");
     ButtonStartTexture.loadFromFile("image/Start.jpg");
     ButtonRecordTexture.loadFromFile("image/Record.jpg");
@@ -58,7 +59,7 @@ void menu(RenderWindow& window)
             }
             if (menuNum == 2) {
                 isMenu = 0;
-                rec(window, BackgroudTexture, ButtonExitTexture);
+                rec(window, BackgroundrecTexture, ButtonExitTexture);
             }
             if (menuNum == 3) {
                 isMenu = 0;
