@@ -132,7 +132,7 @@ void GameOver(RenderWindow& window, Font& font, Texture& GamegroundTexture, int 
     sf::RenderWindow WinBox(sf::VideoMode(256, 128), "GAME OVER", sf::Style::Titlebar);
     Sprite fon(GamegroundTexture);
     while (WinBox.isOpen()) {
-        window.setVisible(false);
+        // window.setVisible(false);
         WinBox.setActive(true);
         Event event;
         while (WinBox.pollEvent(event)) {
@@ -182,7 +182,7 @@ int ChooseWin(RenderWindow& window, Font& font, Texture& GamegroundTexture)
     sf::RenderWindow WinBox(sf::VideoMode(256, 128), "Choose the difficulty", sf::Style::Titlebar);
     Sprite fon(GamegroundTexture);
     while (WinBox.isOpen()) {
-        window.setVisible(false);
+        // window.setVisible(false);
         text.setString(Dif[i]);
         WinBox.setActive(true);
         Event event;
