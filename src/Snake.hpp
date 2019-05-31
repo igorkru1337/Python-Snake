@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <random>
+#include <string>
 #include <time.h>
 
 using namespace sf;

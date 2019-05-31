@@ -1,6 +1,16 @@
 #include "Snake.hpp"
 #include "GlobVar.hpp"
 
+extern FILE* Rec;
+extern char temp[80];
+extern char temp1[80];
+
+struct Player {
+    int place;
+    char name[80];
+    int record;
+} p[10];
+
 struct S {
     int x;
     int y;
@@ -84,8 +94,136 @@ void Display(sf::RenderWindow& win, Texture& GamegroundTexture, Texture& FructTe
     Snake(win, HeadLeftTexture);
 }
 
+void setRecord(int Score, char* name)
+{
+    int i, j, k;
+    for (i = 0; i < 10; i++) {
+        if (Score > p[i].record) {
+            for (k = i; k < 10; k++) {
+                if (p[k].place != 0)
+                    p[k + 1].place = k + 2;
+            }
+            if (i == 0)
+                p[0].place = 1;
+            for (j = 9; j >= i; j--) {
+                p[j].record = p[j - 1].record;
+                strcpy(p[j].name, p[j - 1].name);
+            }
+            p[i].record = Score;
+            strcpy(p[i].name, name);
+            filesave();
+            return;
+        }
+    }
+}
+
+void GameOver(RenderWindow& window, Font& font, Texture& GamegroundTexture, int Score)
+{
+    int i = 0;
+    char t[10], str[11];
+    for (int i = 0; i < 10; i++)
+        t[i] = ' ';
+    Text text;
+    text.setFont(font);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(80.f, 40.f);
+    sf::RenderWindow WinBox(sf::VideoMode(256, 128), "GAME OVER", sf::Style::Titlebar);
+    Sprite fon(GamegroundTexture);
+    while (WinBox.isOpen()) {
+        window.setVisible(false);
+        WinBox.setActive(true);
+        Event event;
+        while (WinBox.pollEvent(event)) {
+            if (event.type == sf::Event::LostFocus) {
+                WinBox.setVisible(true);
+            }
+            if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode == 8)
+                    if (i > 0) {
+                        t[--i] = ' ';
+                        text.setString(t);
+                    }
+                if (event.text.unicode < 123 && event.text.unicode > 47 && i < 10) {
+                    t[i] = static_cast<char>(event.text.unicode);
+                    i++;
+                    text.setString(t);
+                }
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Return)) {
+                window.setVisible(true);
+                WinBox.setActive(false);
+                WinBox.close();
+                strncpy(str, t, i);
+                setRecord(Score, str);
+                return;
+            }
+        }
+        WinBox.clear(sf::Color::White);
+        WinBox.draw(fon);
+        WinBox.draw(text);
+        WinBox.display();
+    }
+}
+
+int ChooseWin(RenderWindow& window, Font& font, Texture& GamegroundTexture)
+{
+    int i = 0;
+    std::string Dif[3];
+    Dif[0] = "Easy";
+    Dif[1] = "Medium";
+    Dif[2] = "Hard";
+    Text text;
+    text.setFont(font);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(80.f, 40.f);
+    sf::RenderWindow WinBox(sf::VideoMode(256, 128), "Сhoose the difficulty", sf::Style::None);
+    Sprite fon(GamegroundTexture);
+    while (WinBox.isOpen()) {
+        window.setVisible(false);
+        text.setString(Dif[i]);
+        WinBox.setActive(true);
+        Event event;
+        while (WinBox.pollEvent(event)) {
+            if (event.type == sf::Event::LostFocus) {
+                WinBox.setVisible(true);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Up)) {
+                i++;
+                if (i > 2)
+                    i = 0;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Down)) {
+                i--;
+                if (i < 0)
+                    i = 2;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Return)) {
+                window.setVisible(true);
+                WinBox.setActive(false);
+                WinBox.close();
+                if (i == 0)
+                    return 800;
+                if (i == 1)
+                    return 500;
+                if (i == 2)
+                    return 300;
+            }
+        }
+        WinBox.clear(sf::Color::White);
+        WinBox.draw(fon);
+        WinBox.draw(text);
+        WinBox.display();
+    }
+    return 0;
+}
+
 int game(RenderWindow& window) // ??????? ???????
 {
+    if ((Rec = fopen("thirdparty/txt/Records.txt", "r")) == NULL) {
+        Rec = fopen("thirdparty/txt/Records.txt", "w");
+        fclose(Rec);
+    }
+    filesee();
     Image Head;
     Head.loadFromFile("image/Lefthead.png");
     Head.createMaskFromColor(Color(255, 255, 255));
@@ -93,6 +231,15 @@ int game(RenderWindow& window) // ??????? ???????
     GamegroundTexture.loadFromFile("image/Gamefon.jpg");
     FructTexture.loadFromFile("image/Apple.png");
     HeadLeftTexture.loadFromImage(Head);
+    Font font;
+    if (!font.loadFromFile("thirdparty/font/sansation.ttf"))
+        return -1;
+    int speed = ChooseWin(window, font, GamegroundTexture);
+    window.setTitle("Snake");
+    int Score = 0;
+    std::string list;
+    Text textR;
+    textR.setFont(font);
     srand(time(0));
     dir = 0;
     bool isKey = 1;
@@ -102,10 +249,9 @@ int game(RenderWindow& window) // ??????? ???????
     num = 4;
     s[0].x = 10;
     for (int i = 0; i < num; i++) {
-        s[i].y = 10 + (i + 1);
+        s[i].y = 20 + (i + 1);
         s[i].x = 10;
     }
-    int speed = 500;
     float timer = 0;
     Clock clock;
     while (window.isOpen()) {
@@ -133,7 +279,7 @@ int game(RenderWindow& window) // ??????? ???????
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Escape))
-            menu(window);
+            return 0;
         if (isKey == 1) {
             Key(dir);
             isKey = 0;
@@ -142,8 +288,10 @@ int game(RenderWindow& window) // ??????? ???????
         Display(window, GamegroundTexture, FructTexture, HeadLeftTexture);
         window.display();
         if (timer > speed) {
-            if (SnakeCrush(s) == 0)
+            if (SnakeCrush(s) == 0) {
+                GameOver(window, font, GamegroundTexture, Score);
                 return 0;
+            }
             for (int i = num; i > 0; --i) {
                 s[i].x = s[i - 1].x;
                 s[i].y = s[i - 1].y;
@@ -162,13 +310,14 @@ int game(RenderWindow& window) // ??????? ???????
             {
                 if ((s[0].x == m[i].x1) && (s[0].y == m[i].y1)) {
                     num++;
+                    Score += 10;
+                    window.setTitle("Snake. Score: " + intToStr(Score));
                     for (int j = 0; j < num; j++)
                         while ((s[j].x == m[i].x1) && (s[j].y == m[i].y1))
                             m[i].New();
                 }
             }
         }
-#include "../src/Snake.hpp"
     }
     return 0;
 }
