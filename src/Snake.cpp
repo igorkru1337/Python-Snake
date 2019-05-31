@@ -124,8 +124,8 @@ void GameOver(RenderWindow& window, Font& font, Texture& GamegroundTexture, int 
     Text text, text1;
     text.setFont(font);
     text1.setFont(font);
-    text.setFillColor(sf::Color::Red);
-    text1.setFillColor(sf::Color::Red);
+    // text.setOutlineColor(sf::Color::Black);
+    // text1.setFillColor(sf::Color::Red);
     text.setPosition(60.f, 45.f);
     text1.setPosition(5.f, 10.f);
     text1.setString("Input player name:");
@@ -177,7 +177,7 @@ int ChooseWin(RenderWindow& window, Font& font, Texture& GamegroundTexture)
     Dif[2] = "Hard";
     Text text;
     text.setFont(font);
-    text.setFillColor(sf::Color::Red);
+    // text.setFillColor(sf::Color::Red);
     text.setPosition(80.f, 40.f);
     sf::RenderWindow WinBox(sf::VideoMode(256, 128), "Choose the difficulty", sf::Style::Titlebar);
     Sprite fon(GamegroundTexture);

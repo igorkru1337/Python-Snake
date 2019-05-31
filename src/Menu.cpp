@@ -90,15 +90,13 @@ void rec(RenderWindow& window, Texture& BackgroundTexture, Texture& ButtonExitTe
         fclose(Rec);
     }
     filesee();
-    for (int i = 0; i < 10; i++)
-        std::cout << p[i].place << ". " << p[i].name << std::endl;
     Text text1;
     Font font;
     if (!font.loadFromFile("thirdparty/font/sansation.ttf"))
         return;
     text1.setFont(font);
     text1.setPosition(200.f, 300.f);
-    text1.setFillColor(Color::White);
+    // text1.setFillColor(Color::White);
     std::string str;
     std::string str1;
     for (int i = 0; i < 10; i++) {
@@ -149,7 +147,7 @@ void dev(RenderWindow& window, Texture& BackgrounddevTexture, Texture& ButtonExi
     text1.setFont(font);
     text1.setPosition(150.f, 325.f);
     text1.setString("Krupennikov Igor: Main Developer/Teamleader\n\nAlexey Sarvetnikov: Graphic developer\n\nMihail Zaharov: Game engine developer");
-    text1.setFillColor(Color::White);
+    // text1.setFillColor(Color::White);
     Sprite background(BackgrounddevTexture), Exit(ButtonExitTexture);
     int menuNum = 0;
     background.setPosition(0, 0);
